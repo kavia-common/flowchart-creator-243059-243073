@@ -1,104 +1,385 @@
-/* CSS Variables for Theme Management */
+/* Retro theme + layout for the flowchart creator.
+   The app uses CSS variables so theme tweaks are centralized. */
+
 :root {
-  /* Light theme colors */
-  --bg-primary: #ffffff;
-  --bg-secondary: #f8f9fa;
-  --text-primary: #282c34;
-  --text-secondary: #61dafb;
-  --border-color: #e9ecef;
-  --button-bg: #007bff;
-  --button-text: #ffffff;
+  --bg: #0b1020;
+  --panel: rgba(12, 18, 40, 0.88);
+  --panel-2: rgba(12, 18, 40, 0.65);
+  --grid: rgba(126, 244, 255, 0.08);
+
+  --text: #eaffff;
+  --muted: rgba(234, 255, 255, 0.75);
+
+  --neon-cyan: #7ef4ff;
+  --neon-pink: #ff4fd8;
+  --neon-yellow: #ffe66d;
+  --neon-green: #4cffb3;
+  --danger: #ff3b30;
+
+  --border: rgba(126, 244, 255, 0.25);
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+
+  --radius: 14px;
+
+  --font-ui: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace;
 }
 
-[data-theme="dark"] {
-  /* Dark theme colors */
-  --bg-primary: #1a1a1a;
-  --bg-secondary: #282c34;
-  --text-primary: #ffffff;
-  --text-secondary: #61dafb;
-  --border-color: #404040;
-  --button-bg: #0056b3;
-  --button-text: #ffffff;
+* {
+  box-sizing: border-box;
 }
 
 .App {
-  text-align: center;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
-  min-height: 100vh;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  height: 100vh;
+  background:
+    radial-gradient(900px 500px at 20% 10%, rgba(255, 79, 216, 0.16), transparent 60%),
+    radial-gradient(900px 500px at 80% 30%, rgba(126, 244, 255, 0.14), transparent 60%),
+    linear-gradient(180deg, #070a14 0%, #0b1020 60%, #070a14 100%);
+  color: var(--text);
+  font-family: var(--font-ui);
+  overflow: hidden;
 }
 
-.App-logo {
-  height: 40vmin;
+.retroGrid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px);
+  background-size: 48px 48px;
   pointer-events: none;
+  mask-image: radial-gradient(circle at 50% 30%, rgba(0, 0, 0, 1) 0%, rgba(0, 0, 0, 0.2) 55%, rgba(0, 0, 0, 0) 80%);
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: var(--bg-secondary);
-  min-height: 100vh;
+.appShell {
+  position: relative;
+  height: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.header {
+  height: 58px;
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: var(--text-primary);
-  transition: background-color 0.3s ease;
-  position: relative;
+  gap: 14px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, var(--panel) 0%, var(--panel-2) 100%);
+  box-shadow: var(--shadow);
+  z-index: 10;
 }
 
-.App-link {
-  color: var(--text-secondary);
-  transition: color 0.3s ease;
+.brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 240px;
 }
 
-.theme-toggle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  background-color: var(--button-bg);
-  color: var(--button-text);
-  border: none;
-  border-radius: 8px;
-  padding: 10px 20px;
+.brandTitle {
+  font-weight: 800;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
   font-size: 14px;
-  font-weight: 600;
+}
+
+.brandTitle .accent {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 14px rgba(126, 244, 255, 0.5);
+}
+
+.brandSubtitle {
+  font-family: var(--font-mono);
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.rightTools {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.btn {
+  appearance: none;
+  border: 1px solid var(--border);
+  background: rgba(126, 244, 255, 0.06);
+  color: var(--text);
+  padding: 8px 10px;
+  border-radius: 10px;
+  font-size: 13px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 120ms ease, background 120ms ease, border 120ms ease;
+  user-select: none;
 }
 
-.theme-toggle:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-  opacity: 0.9;
+.btn:hover {
+  transform: translateY(-1px);
+  background: rgba(126, 244, 255, 0.11);
 }
 
-.theme-toggle:active {
+.btn:active {
   transform: translateY(0);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.btnPrimary {
+  border-color: rgba(255, 79, 216, 0.45);
+  background: rgba(255, 79, 216, 0.12);
 }
 
-/* Responsive design for mobile */
-@media (max-width: 768px) {
-  .theme-toggle {
-    top: 10px;
-    right: 10px;
-    padding: 8px 16px;
-    font-size: 12px;
+.btnDanger {
+  border-color: rgba(255, 59, 48, 0.55);
+  background: rgba(255, 59, 48, 0.12);
+}
+
+.btnDisabled,
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.pill {
+  border: 1px solid var(--border);
+  background: rgba(126, 244, 255, 0.05);
+  color: var(--muted);
+  font-family: var(--font-mono);
+  padding: 7px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.main {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+
+.canvasRoot {
+  position: absolute;
+  inset: 0;
+}
+
+.hintOverlay {
+  position: absolute;
+  left: 14px;
+  bottom: 14px;
+  z-index: 5;
+  max-width: min(520px, calc(100% - 28px));
+  border: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(12, 18, 40, 0.85), rgba(12, 18, 40, 0.55));
+  border-radius: var(--radius);
+  padding: 10px 12px;
+  box-shadow: var(--shadow);
+}
+
+.hintTitle {
+  font-weight: 700;
+  font-size: 12px;
+  margin-bottom: 6px;
+  color: var(--neon-yellow);
+  text-shadow: 0 0 14px rgba(255, 230, 109, 0.35);
+}
+
+.hintList {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.45;
+  font-family: var(--font-mono);
+}
+
+.toast {
+  position: absolute;
+  top: 70px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  border: 1px solid var(--border);
+  background: rgba(12, 18, 40, 0.9);
+  padding: 10px 12px;
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-size: 13px;
+  max-width: min(560px, calc(100% - 24px));
+  pointer-events: none;
+}
+
+.toast strong {
+  color: var(--neon-cyan);
+}
+
+/* React Flow theming */
+.reactFlowWrapper :global(.react-flow__background) {
+  background: transparent;
+}
+
+/* Because CRA doesn't support :global in plain css, we style via class names below. */
+.react-flow__pane {
+  cursor: crosshair;
+}
+
+.react-flow__controls button {
+  border-radius: 10px !important;
+  border: 1px solid var(--border) !important;
+  background: rgba(12, 18, 40, 0.75) !important;
+  box-shadow: none !important;
+  color: var(--text) !important;
+}
+
+.react-flow__minimap {
+  background: rgba(12, 18, 40, 0.55) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 12px !important;
+}
+
+.react-flow__attribution {
+  display: none;
+}
+
+/* Custom node styles */
+.nodeCard {
+  min-width: 190px;
+  max-width: 280px;
+  border-radius: 14px;
+  border: 1px solid rgba(126, 244, 255, 0.35);
+  background: linear-gradient(180deg, rgba(12, 18, 40, 0.92), rgba(12, 18, 40, 0.6));
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+  color: var(--text);
+  overflow: hidden;
+}
+
+.nodeHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(126, 244, 255, 0.2);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  color: var(--muted);
+}
+
+.nodeBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.nodeDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: var(--neon-cyan);
+  box-shadow: 0 0 16px rgba(126, 244, 255, 0.55);
+}
+
+.nodeTypeProcess .nodeDot {
+  background: var(--neon-cyan);
+  box-shadow: 0 0 16px rgba(126, 244, 255, 0.55);
+}
+
+.nodeTypeDecision .nodeDot {
+  background: var(--neon-yellow);
+  box-shadow: 0 0 16px rgba(255, 230, 109, 0.45);
+}
+
+.nodeTypeInput .nodeDot {
+  background: var(--neon-green);
+  box-shadow: 0 0 16px rgba(76, 255, 179, 0.45);
+}
+
+.nodeTypeOutput .nodeDot {
+  background: var(--neon-pink);
+  box-shadow: 0 0 16px rgba(255, 79, 216, 0.45);
+}
+
+.nodeBody {
+  padding: 10px;
+  font-size: 13px;
+  line-height: 1.35;
+  font-family: var(--font-ui);
+}
+
+.nodeText {
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.nodeEditor {
+  width: 100%;
+  min-height: 74px;
+  resize: vertical;
+  border-radius: 12px;
+  border: 1px solid rgba(126, 244, 255, 0.25);
+  background: rgba(0, 0, 0, 0.25);
+  color: var(--text);
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  outline: none;
+}
+
+.nodeEditor:focus {
+  border-color: rgba(255, 79, 216, 0.55);
+  box-shadow: 0 0 0 3px rgba(255, 79, 216, 0.15);
+}
+
+.nodeActions {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-top: 1px solid rgba(126, 244, 255, 0.2);
+  background: rgba(126, 244, 255, 0.03);
+}
+
+.nodeBtn {
+  padding: 6px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(126, 244, 255, 0.2);
+  background: rgba(126, 244, 255, 0.06);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 12px;
+  font-family: var(--font-mono);
+}
+
+.nodeBtn:hover {
+  background: rgba(126, 244, 255, 0.12);
+}
+
+.nodeBtnDanger {
+  border-color: rgba(255, 59, 48, 0.4);
+  background: rgba(255, 59, 48, 0.12);
+}
+
+/* React Flow selection highlight */
+.react-flow__node.selected .nodeCard {
+  border-color: rgba(255, 79, 216, 0.75);
+  box-shadow: 0 0 0 2px rgba(255, 79, 216, 0.22), 0 12px 26px rgba(0, 0, 0, 0.42);
+}
+
+@media (max-width: 720px) {
+  .brand {
+    min-width: unset;
+  }
+  .brandSubtitle {
+    display: none;
+  }
+  .pill {
+    display: none;
   }
 }
