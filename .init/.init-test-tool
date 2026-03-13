@@ -1,0 +1,4 @@
+{
+    "command": "npm run test",
+    "working_directory": "/home/kavia/workspace/code-generation/flowchart-creator-243059-243073/frontend_canvas_flowchart"
+}
